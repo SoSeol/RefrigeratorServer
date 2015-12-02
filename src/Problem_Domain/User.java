@@ -129,44 +129,41 @@ public class User implements java.io.Serializable {
 		return fList.updateList(UpdateUserAction.DELETE, null, delete_food, this.getName(), mList);
 	}
 
-	// p@ 음식은 이름으로 public boolean modifyFood(FoodEditType type, int idx, String editData, FoodList fList, MessageList mList) {
-	public boolean modifyFood(FoodEditType type, String fname, String editData, FoodList fList, MessageList mList) {
-		//Food modify_food = fList.elementAt(idx);
-		String foodname = fname;
-		Food modify_food = fList.searchFood(foodname);
+	public boolean modifyFood(FoodEditType type, int idx, String editData, FoodList fList, MessageList mList) {
+		Food modifyFood = fList.elementAt(idx);
 		if (editData == null)
 			return false;
 		switch (type) {
 		case FreezerCooler:
 			switch (editData) {
 			case "Freezer":
-				modify_food.setFreezeType(true);
+				modifyFood.setFreezeType(true);
 				break;
 			case "Cooler":
-				modify_food.setFreezeType(false);
+				modifyFood.setFreezeType(false);
 				break;
 			}
 			break;
 		case Location:
-			modify_food.setFloor(editData);
+			modifyFood.setFloor(editData);
 			break;
 		case Quantity:
-			modify_food.setQuantity(Integer.parseInt(editData));
+			modifyFood.setQuantity(Integer.parseInt(editData));
 			break;
 		case Weight:
-			modify_food.setWeight(Integer.parseInt(editData));
+			modifyFood.setWeight(Integer.parseInt(editData));
 			break;
 		case Calories:
-			modify_food.setCalories(Integer.parseInt(editData));
+			modifyFood.setCalories(Integer.parseInt(editData));
 			break;
 		case Memo:
-			modify_food.setMemo(editData);
+			modifyFood.setMemo(editData);
 			break;
 		default:
 			System.err.println("Unknown type\n"); /* p@ 음식 타입 에러 */
 			break;
 		}
-		return fList.updateList(UpdateUserAction.EDIT, type, modify_food, this.getName(), mList);
+		return fList.updateList(UpdateUserAction.EDIT, type, modifyFood, this.getName(), mList);
 	}
 
 	/*
