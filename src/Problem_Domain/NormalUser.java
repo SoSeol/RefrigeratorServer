@@ -10,6 +10,6 @@ public class NormalUser extends User {
 	}
 
 	public String toString() {
-		return "Normal_User, ID : " + getID() + ", Name : " + getName();
+		return "Normal User, ID : " + getID() + ", Name : " + getName();
 	}
 }

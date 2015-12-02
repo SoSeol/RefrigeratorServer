@@ -28,6 +28,7 @@ public class RefrigeratorServer extends OCSF.Server.AbstractServer {
 
 	@Override
 	protected void handleMessageFromClient(Object msg, ConnectionToClient client) {
+		System.out.println((String)msg);
 		String[] recieved = ((String) msg).split("_");
 		boolean writeFlag = false;
 		switch (recieved[0]) {
@@ -367,7 +368,7 @@ public class RefrigeratorServer extends OCSF.Server.AbstractServer {
 				return;
 			}
 			try {
-				String msg = "USER_" + sys.getUserList().showList();
+				String msg = "USER_LIST_" + sys.getUserList().showList();
 				client.sendToClient(msg);
 			} catch (IOException ioe) {
 				ioe.printStackTrace();
