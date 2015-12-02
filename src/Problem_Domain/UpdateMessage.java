@@ -32,6 +32,6 @@ public class UpdateMessage extends Message {
 	@Override
 	public String toString() {
 		return "[UPDATE@" + getcreatedBy() + "] " + getMessageDetail() + " ("
-				+ getSdf().format(getCreatedDate().getTime());
+				+ getSdf().format(getCreatedDate().getTime())+")";
 	}
 }

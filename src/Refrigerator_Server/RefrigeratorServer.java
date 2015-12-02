@@ -136,13 +136,14 @@ public class RefrigeratorServer extends OCSF.Server.AbstractServer {
 		case FOOD_DELETE:
 			if ((boolean) client.getInfo(CLIENT_INFO_LOGGEDON) == false)
 				sendNotLoggedOnError(client);
-			result = currentUser.deleteFood(recieved[2], sys.getFoodList(),sys.getMessageList());
+			index = Integer.parseInt(recieved[2]) - 1;
+			result = currentUser.deleteFood(index, sys.getFoodList(),sys.getMessageList());
 			sendResult(order.toString(), result, client);
 			break;
 		case FOOD_MODIFY:
 			if ((boolean) client.getInfo(CLIENT_INFO_LOGGEDON) == false)
 				sendNotLoggedOnError(client);
-			index = Integer.parseInt(recieved[2]);
+			index = Integer.parseInt(recieved[2]) - 1;
 			FoodEditType fEditType;
 			switch (recieved[3]) {
 			case "freezeType":
@@ -228,7 +229,7 @@ public class RefrigeratorServer extends OCSF.Server.AbstractServer {
 			}
 			break;
 		case MSG_MEMO:
-			index = Integer.parseInt(recieved[2]);
+			index = Integer.parseInt(recieved[2]) - 1;
 			sys.getFoodList().elementAt(index).setMemo(recieved[3]);
 			sendResult(order.toString(), true, client);
 			break;
@@ -295,7 +296,7 @@ public class RefrigeratorServer extends OCSF.Server.AbstractServer {
 				return;
 			}
 
-			index = Integer.parseInt(recieved[2]);
+			index = Integer.parseInt(recieved[2]) - 1;
 			result = ((Administrator) currentUser).deleteUser(index,
 					sys.getUserList(), sys.getMessageList());
 			sendResult(order.toString(), result, client);

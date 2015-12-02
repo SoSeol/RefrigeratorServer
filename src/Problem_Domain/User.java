@@ -113,20 +113,8 @@ public class User implements java.io.Serializable {
 	 * @param idx
 	 *            삭제하고자 하는 음식 인덱스
 	 */
-	/*
-	 * p@ 유저는 인덱스만 찾아서 삭제 해도 되는데(무조건 전체 유저리스트 출력이라) 음식은 이름을 받아서 삭제하는 것도 필요할 것
 	public boolean deleteFood(int idx, FoodList fList, MessageList mList) {
 		return fList.updateList(UpdateUserAction.DELETE, null, fList.elementAt(idx), this.getName(), mList);
-	}
-
-	
-	 * 같습니다. 음식을 삭제할 때 인덱스나 이름으로만 할지 아니면 둘 다 사용할지 고민되네요
-	 */
-	public boolean deleteFood(String name, FoodList fList, MessageList mList) {
-		Food delete_food = fList.searchFood(name);
-		if (delete_food == null)
-			return false;
-		return fList.updateList(UpdateUserAction.DELETE, null, delete_food, this.getName(), mList);
 	}
 
 	public boolean modifyFood(FoodEditType type, int idx, String editData, FoodList fList, MessageList mList) {

@@ -105,7 +105,7 @@ public class Message implements java.io.Serializable {
 	public String toString() {
 		
 		//return '[' + sdf.format(getCreatedDate().getTime()) + ',' + getcreatedBy() + "] " + getMessageDetail();
-		return "[MEMO@"+getcreatedBy()+"] "+getMessageDetail() + " ("+getSdf().format(getCreatedDate().getTime()) + ")";
+		return "[MEMO@"+getcreatedBy()+"] "+getMessageDetail() + " ("+getSdf().format(getCreatedDate().getTime()) + ')';
 	}
 	
 }

@@ -37,7 +37,7 @@ public class WarningMessage extends Message {
 		// String[] splitted = super.toString().split(" ");
 		// return splitted[0] + "Warning : " + splitted[1];
 		return "[WARNING@" + getcreatedBy() + "] " + getMessageDetail() + " ("
-				+ getSdf().format(getCreatedDate().getTime());
+				+ getSdf().format(getCreatedDate().getTime()) + ")";
 	}
 
 }
