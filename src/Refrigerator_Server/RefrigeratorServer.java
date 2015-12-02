@@ -266,10 +266,15 @@ public class RefrigeratorServer extends OCSF.Server.AbstractServer {
 			}
 
 			try {
+				StringBuffer buf = new StringBuffer();
+				buf.append("LOGIN_TRUE_");
 				if (currentUser instanceof Administrator)
-					client.sendToClient("LOGIN_TRUE_ADMINISTRATOR");
+					buf.append("ADMINISTRATOR_");
 				else
-					client.sendToClient("LOGIN_TRUE_NORMALUSER");
+					buf.append("NORMALUSER");
+				buf.append("_");
+				buf.append(currentUser.getName());
+				client.sendToClient(buf.toString());
 			} catch (IOException ioe) {
 			}
 			client.setInfo(CLIENT_INFO_USERID, recieved[1]);
