@@ -11,10 +11,15 @@ import Problem_Domain.*;
 public class RefrigeratorServer extends OCSF.Server.AbstractServer {
 	private RefrigeratorSystem sys;
 	private static final int DEFAULT_PORT = 31337;
+	private final static String CLIENT_INFO_CONNECTINFO = "connectInfo";
+	private final static String CLIENT_INFO_LOGGEDON = "loggedOn";
+	private final static String CLIENT_INFO_USERID = "userID";
 
 	/* p@ userinfo msgmemo 추가했습니다. */
 	private enum ClientOrder {
-		LOGIN, GET_FOOD, GET_MSG, FOOD_MODIFY, FOOD_DELETE, FOOD_REGISTER, FOOD_SEARCH, FOOD_SHOW, USER_MODIFY, USER_DELETE, USER_REGISTER, USER_SHOW, USER_INFO, MSG_SHOW, MSG_DELETEOLD, MSG_MEMO;
+		LOGIN, FOOD_MODIFY, FOOD_DELETE, FOOD_REGISTER, FOOD_SEARCH, 
+		FOOD_SHOW, USER_MODIFY, USER_DELETE, USER_REGISTER, USER_SHOW, USER_INFO, 
+		MSG_SHOW, MSG_DELETEOLD, MSG_MEMO;
 	}
 
 	public RefrigeratorServer(int port) {
@@ -27,15 +32,6 @@ public class RefrigeratorServer extends OCSF.Server.AbstractServer {
 		String[] recieved = ((String) msg).split("_");
 		boolean writeFlag = false;
 		switch (recieved[0]) {
-		// p@ get의 목적이 무엇인가요?
-		case "GET":
-			if (recieved[1].compareTo("FOOD") == 0)
-				handleClientOrder(ClientOrder.GET_FOOD, recieved, client);
-			else if (recieved[1].compareTo("USER") == 0)
-				handleClientOrder(ClientOrder.GET_MSG, recieved, client);
-			else
-				sendUnknownCommandError(client);
-			break;
 		case "LOGIN":
 			handleClientOrder(ClientOrder.LOGIN, recieved, client);
 			break;
@@ -165,18 +161,17 @@ public class RefrigeratorServer extends OCSF.Server.AbstractServer {
 	private void handleClientOrder(ClientOrder order, String[] recieved,
 			ConnectionToClient client) {
 		int index;
-		String foodname; 
 		boolean result;
 		User currentUser = null;
-		if ((String) client.getInfo("userID") != null)
+		if ((String) client.getInfo(CLIENT_INFO_USERID) != null)
 			// p@ currentUser =
-			// RefrigeratorSystem.getUserList().checkID((String)client.getInfo("userID"));
+			// RefrigeratorSystem.getUserList().checkID((String)client.getInfo(CLIENT_INFO_USERID));
 			currentUser = sys.getUserList().checkID(
-					(String) client.getInfo("userID"));
+					(String) client.getInfo(CLIENT_INFO_USERID));
 
 		switch (order) {
 		case FOOD_DELETE:
-			if ((boolean) client.getInfo("loggedOn") == false)
+			if ((boolean) client.getInfo(CLIENT_INFO_LOGGEDON) == false)
 				sendNotLoggedOnError(client);
 			//index = Integer.parseInt(recieved[2]);
 			//result = currentUser.deleteFood(index, sys.getFoodList(),sys.getMessageList());
@@ -187,7 +182,7 @@ public class RefrigeratorServer extends OCSF.Server.AbstractServer {
 			sendResult(order.toString(), result, client);
 			break;
 		case FOOD_MODIFY:
-			if ((boolean) client.getInfo("loggedOn") == false)
+			if ((boolean) client.getInfo(CLIENT_INFO_LOGGEDON) == false)
 				sendNotLoggedOnError(client);
 			//index = Integer.parseInt(recieved[2]);
 			FoodEditType fEditType;
@@ -222,7 +217,7 @@ public class RefrigeratorServer extends OCSF.Server.AbstractServer {
 			sendResult(order.toString(), result, client);
 			break;
 		case FOOD_REGISTER:
-			if ((boolean) client.getInfo("loggedOn") == false)
+			if ((boolean) client.getInfo(CLIENT_INFO_LOGGEDON) == false)
 				sendNotLoggedOnError(client);
 			boolean bFreezer;
 			Calendar cal = Calendar.getInstance();
@@ -256,7 +251,7 @@ public class RefrigeratorServer extends OCSF.Server.AbstractServer {
 			sendResult(order.toString(), result, client);
 			break;
 		case FOOD_SEARCH:
-			if ((boolean) client.getInfo("loggedOn") == false)
+			if ((boolean) client.getInfo(CLIENT_INFO_LOGGEDON) == false)
 				sendNotLoggedOnError(client);
 			try {
 				/*
@@ -273,11 +268,8 @@ public class RefrigeratorServer extends OCSF.Server.AbstractServer {
 				ioe.printStackTrace();
 			}
 			break;
-		case GET_FOOD:
-			// p@ get food 용도는?
-
 		case FOOD_SHOW:
-			if ((boolean) client.getInfo("loggedOn") == false)
+			if ((boolean) client.getInfo(CLIENT_INFO_LOGGEDON) == false)
 				sendNotLoggedOnError(client);
 			try {
 				// p@ String msg = "FOOD_" +
@@ -290,8 +282,6 @@ public class RefrigeratorServer extends OCSF.Server.AbstractServer {
 				ioe.printStackTrace();
 			}
 			break;
-		case GET_MSG:
-			// p@ get의 용도는?
 		case MSG_SHOW:
 			try {
 
@@ -312,7 +302,7 @@ public class RefrigeratorServer extends OCSF.Server.AbstractServer {
 			break;
 		case LOGIN:
 			// 이미 로그인하였으면 ALREADY_LOGGED_ON 메세지를 전송
-			if ((boolean) client.getInfo("loggedOn") == true) {
+			if ((boolean) client.getInfo(CLIENT_INFO_LOGGEDON) == true) {
 				try {
 					client.sendToClient("ALREADY_LOGGED_ON");
 					return;
@@ -341,11 +331,12 @@ public class RefrigeratorServer extends OCSF.Server.AbstractServer {
 					client.sendToClient("LOGIN_TRUE_NORMALUSER");
 			} catch (IOException ioe) {
 			}
-			client.setInfo("userID", recieved[1]);
-			client.setInfo("loggedOn", true);
+			client.setInfo(CLIENT_INFO_USERID, recieved[1]);
+			client.setInfo(CLIENT_INFO_LOGGEDON, true);
+			System.out.println("Client " + client + " logged on as ID " + recieved[1] + '.');
 			break;
 		case MSG_DELETEOLD:
-			if ((boolean) client.getInfo("loggedOn") == false)
+			if ((boolean) client.getInfo(CLIENT_INFO_LOGGEDON) == false)
 				sendNotLoggedOnError(client);
 			if (currentUser instanceof NormalUser) {
 				sendPrevilegeError(client);
@@ -353,11 +344,11 @@ public class RefrigeratorServer extends OCSF.Server.AbstractServer {
 			}
 			((Administrator) currentUser).deleteOldMessages(sys
 					.getMessageList());
-			// p@
-			// ((Administrator)currentUser).deleteOldMessages(RefrigeratorSystem.getMessageList());
+
+			sendResult("MSG_DELETE", true, client);
 			break;
 		case USER_DELETE:
-			if ((boolean) client.getInfo("loggedOn") == false)
+			if ((boolean) client.getInfo(CLIENT_INFO_LOGGEDON) == false)
 				sendNotLoggedOnError(client);
 			if (currentUser instanceof NormalUser) {
 				sendPrevilegeError(client);
@@ -373,7 +364,7 @@ public class RefrigeratorServer extends OCSF.Server.AbstractServer {
 			sendResult(order.toString(), result, client);
 			break;
 		case USER_MODIFY:
-			if ((boolean) client.getInfo("loggedOn") == false)
+			if ((boolean) client.getInfo(CLIENT_INFO_LOGGEDON) == false)
 				sendNotLoggedOnError(client);
 			if (currentUser instanceof NormalUser) {
 				sendPrevilegeError(client);
@@ -403,7 +394,7 @@ public class RefrigeratorServer extends OCSF.Server.AbstractServer {
 			sendResult(order.toString(), result, client);
 			break;
 		case USER_REGISTER:
-			if ((boolean) client.getInfo("loggedOn") == false)
+			if ((boolean) client.getInfo(CLIENT_INFO_LOGGEDON) == false)
 				sendNotLoggedOnError(client);
 			if (currentUser instanceof NormalUser) {
 				sendPrevilegeError(client);
@@ -431,7 +422,7 @@ public class RefrigeratorServer extends OCSF.Server.AbstractServer {
 			// RefrigeratorSystem.getMessageList());
 			break;
 		case USER_SHOW:
-			if ((boolean) client.getInfo("loggedOn") == false)
+			if ((boolean) client.getInfo(CLIENT_INFO_LOGGEDON) == false)
 				sendNotLoggedOnError(client);
 			if (currentUser instanceof NormalUser) {
 				sendPrevilegeError(client);
@@ -447,7 +438,7 @@ public class RefrigeratorServer extends OCSF.Server.AbstractServer {
 			}
 			break;
 		case USER_INFO:
-			if ((boolean) client.getInfo("loggedOn") == false)
+			if ((boolean) client.getInfo(CLIENT_INFO_LOGGEDON) == false)
 				sendNotLoggedOnError(client);
 
 			currentUser = sys.getUserList().checkID(recieved[2]);
@@ -479,7 +470,9 @@ public class RefrigeratorServer extends OCSF.Server.AbstractServer {
 	 * 초기에 로그인을 하지 않았으므로 클라이언트의 loggedOn 항목을 false로 지정
 	 */
 	protected void clientConnected(ConnectionToClient client) {
-		client.setInfo("loggedOn", false);
+		System.out.println("Client " + client + " connecteed.");
+		client.setInfo(CLIENT_INFO_LOGGEDON, false);
+		client.setInfo(CLIENT_INFO_CONNECTINFO, client.toString());
 	}
 
 	/**
@@ -540,13 +533,11 @@ public class RefrigeratorServer extends OCSF.Server.AbstractServer {
 
 	synchronized protected void clientException(ConnectionToClient client,
 			Throwable exception) {
-		System.out.println("client exception : " + exception.getMessage());
-		System.err.println(exception);
-		exception.printStackTrace();
+		//System.out.println("Client exception : " + exception.getMessage());
 		try {
 			client.close();
+			System.out.println("Client " + client.getInfo(CLIENT_INFO_CONNECTINFO) + " disconnected.");
 		} catch (IOException e) {
-			e.printStackTrace();
 		}
 	}
 
@@ -559,9 +550,9 @@ public class RefrigeratorServer extends OCSF.Server.AbstractServer {
 		}
 
 		RefrigeratorServer server = new RefrigeratorServer(port);
-		System.out.println("SERVER READY");
-
+		
 		try {
+			System.out.println("Server is almost ready...");
 			server.listen(); // Start listening for connections
 		} catch (Exception ex) {
 			System.err.println("ERROR - Could not listen for clients!");

@@ -116,13 +116,13 @@ public class UserList implements java.io.Serializable {
 		UpdateMessage newMessage = null;
 		switch (t) {
 		case Addition:
-			newMessage = new UpdateMessage("New User " + tgtUserName + "added by " + operatorName, operatorName);
+			newMessage = new UpdateMessage("New User " + tgtUserName + " added by " + operatorName, operatorName);
 			break;
 		case Modification:
-			newMessage = new UpdateMessage("User " + tgtUserName + "modified by " + operatorName, operatorName);
+			newMessage = new UpdateMessage("User " + tgtUserName + " modified by " + operatorName, operatorName);
 			break;
 		case Removal:
-			newMessage = new UpdateMessage("User " + tgtUserName + "deleted by " + operatorName, operatorName);
+			newMessage = new UpdateMessage("User " + tgtUserName + " deleted by " + operatorName, operatorName);
 			break;
 		default:
 			System.err.println("Unknown type\n"); /* p@ 메세지 타입 에러 */
