@@ -385,7 +385,7 @@ public class RefrigeratorServer extends OCSF.Server.AbstractServer {
 				return;
 			}
 			result = sys.getUserList().updateList(UpdateUserAction.EDIT,
-					currentUser, currentUser.getID(), sys.getMessageList());
+					currentUser, currentUser.getID(), sys.getMessageList(), false);
 			sendResult(order.toString() + '_' + currentUser.getID() + '_'
 					+ currentUser.getName(), result, client);
 			sys.writeUser();
