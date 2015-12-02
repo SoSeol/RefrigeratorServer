@@ -234,14 +234,24 @@ public class RefrigeratorServer extends OCSF.Server.AbstractServer {
 			break;
 		case LOGIN:
 			// 이미 로그인하였으면 ALREADY_LOGGED_ON 메세지를 전송
-			if ((boolean) client.getInfo(CLIENT_INFO_LOGGEDON) == true) {
-				try {
-					client.sendToClient("ALREADY_LOGGED_ON");
-					return;
-				} catch (IOException ioe) {
-					ioe.printStackTrace();
+			for(Thread t : this.getClientConnections())
+			{
+				ConnectionToClient c = (ConnectionToClient) t;
+				if(((boolean) c.getInfo(CLIENT_INFO_LOGGEDON)) == true &&
+						((String) c.getInfo(CLIENT_INFO_USERID)).compareTo(recieved[1]) == 0)
+				{
+					try
+					{
+						client.sendToClient("ALREADY_LOGGED_ON");
+						return;
+					}
+					catch (IOException ioe)
+					{
+						ioe.printStackTrace();
+					}
 				}
 			}
+			
 			currentUser = sys.getUserList().checkID(recieved[1]);
 			if (currentUser == null) {
 				sendResult("LOGIN", false, client);
