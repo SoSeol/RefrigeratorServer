@@ -7,7 +7,8 @@ import java.util.Calendar;
 
 public class User implements java.io.Serializable {
 	private static final long serialVersionUID = -6717215299669248946L;
-	MessageDigest hasher; // 메세지 암호화 위한 변수
+	//MessageDigest hasher; // 메세지 암호화 위한 변수
+	private final static String HASH_ALGORITHM = "SHA-256";
 	private String name;
 	private String ID;
 	private byte[] PW;
@@ -24,17 +25,15 @@ public class User implements java.io.Serializable {
 	 * @param prev
 	 */
 	protected User(String newName, String newID, String newPW) {
-		try {
 			// 암호화 초기화.
 			// 자세한 사용방법은
 			// https://docs.oracle.com/javase/8/docs/api/java/security/MessageDigest.html
 			// 참고 바람.
-			hasher = MessageDigest.getInstance("SHA-256");
 			name = newName;
 			ID = newID;
-			PW = hasher.digest(newPW.getBytes());
-		} catch (NoSuchAlgorithmException e) {
-		}
+			try {
+				PW = MessageDigest.getInstance(HASH_ALGORITHM).digest(newPW.getBytes());
+			} catch (NoSuchAlgorithmException e) {}
 	}
 
 	/**
@@ -45,10 +44,6 @@ public class User implements java.io.Serializable {
 	 * @param newPW
 	 *            새 비밀번호 문자열
 	 */
-	/* p@ setPW랑 changePassword랑 똑같은건데 둘중에 하나만 쓰면 되지 않을까요? */
-	public void changePassword(String newPW) {
-		PW = hasher.digest(newPW.getBytes());
-	}
 
 	public void setName(String name) {
 		this.name = name;
@@ -59,7 +54,9 @@ public class User implements java.io.Serializable {
 	}
 
 	public void setPW(String PW) {
-		this.PW = hasher.digest(PW.getBytes());
+		try {
+			this.PW = MessageDigest.getInstance(HASH_ALGORITHM).digest(PW.getBytes());
+		} catch (NoSuchAlgorithmException e) {}
 	}
 
 	public String getName() {
@@ -71,7 +68,9 @@ public class User implements java.io.Serializable {
 	}
 
 	public boolean checkPassword(String inputPW) {
-		return Arrays.equals(PW, hasher.digest(inputPW.getBytes()));
+		try {
+			return Arrays.equals(PW, MessageDigest.getInstance(HASH_ALGORITHM).digest(inputPW.getBytes()));
+		} catch (NoSuchAlgorithmException e) { return false; }
 	}
 
 	@Override

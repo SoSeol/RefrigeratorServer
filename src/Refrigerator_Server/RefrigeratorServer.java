@@ -301,7 +301,7 @@ public class RefrigeratorServer extends OCSF.Server.AbstractServer {
 				 * "MSG_SHOW_" + sys.getMessageList().showList();
 				 */
 
-				client.sendToClient(order.toString()+'_'+sys.getMessageList().showList());
+				client.sendToClient("MSG_SHOW_"+order.toString()+'_'+sys.getMessageList().showList());
 			} catch (IOException ioe) {
 				ioe.printStackTrace();
 			}
