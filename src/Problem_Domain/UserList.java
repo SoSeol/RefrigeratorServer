@@ -68,7 +68,12 @@ public class UserList implements java.io.Serializable {
 	 *            메세지 리스트
 	 * @return true / false
 	 */
-	synchronized public boolean updateList(UpdateUserAction act, User usr, String operatorName, MessageList mList) {
+	synchronized public boolean updateList(UpdateUserAction act, User usr, String operatorName, MessageList mList)
+	{
+		return updateList(act, usr, operatorName, mList, false);
+	}
+	synchronized public boolean updateList(UpdateUserAction act, User usr, String operatorName, MessageList mList, boolean bMessage)
+	{
 		int idx;
 		boolean bSuccess = false;
 		switch (act) {
@@ -84,7 +89,8 @@ public class UserList implements java.io.Serializable {
 			idx = list.indexOf(usr);
 			if (idx != -1) {
 				list.set(idx, usr);
-				createUpdateMessage(UpdateMessageType.Modification, usr.getName(), operatorName, mList);
+				if(bMessage == true)
+					createUpdateMessage(UpdateMessageType.Modification, usr.getName(), operatorName, mList);
 				bSuccess = true;
 			}
 			break;

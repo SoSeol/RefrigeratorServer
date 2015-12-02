@@ -378,7 +378,7 @@ public class RefrigeratorServer extends OCSF.Server.AbstractServer {
 				currentUser.setPW(recieved[4]);
 				break;
 			case "name":
-				currentUser.setPW(recieved[4]);
+				currentUser.setName(recieved[4]);
 				break;
 			default:
 				sendUnknownCommandError(client);
