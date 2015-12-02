@@ -222,7 +222,7 @@ public class RefrigeratorServer extends OCSF.Server.AbstractServer {
 			break;
 		case MSG_SHOW:
 			try {
-				client.sendToClient("MSG_SHOW_"+order.toString()+'_'+sys.getMessageList().showList());
+				client.sendToClient("MSG_SHOW_" + sys.getMessageList().showList());
 			} catch (IOException ioe) {
 				ioe.printStackTrace();
 			}
@@ -299,6 +299,7 @@ public class RefrigeratorServer extends OCSF.Server.AbstractServer {
 			result = ((Administrator) currentUser).deleteUser(index,
 					sys.getUserList(), sys.getMessageList());
 			sendResult(order.toString(), result, client);
+			sys.writeUser();
 			break;
 		case USER_MODIFY:
 			if ((boolean) client.getInfo(CLIENT_INFO_LOGGEDON) == false)
@@ -350,6 +351,7 @@ public class RefrigeratorServer extends OCSF.Server.AbstractServer {
 					recieved[4], recieved[2], recieved[3], sys.getUserList(),
 					sys.getMessageList());
 			sendResult(order.toString(), result, client);
+			sys.writeUser();
 			break;
 		case USER_SHOW:
 			if ((boolean) client.getInfo(CLIENT_INFO_LOGGEDON) == false)
@@ -385,8 +387,8 @@ public class RefrigeratorServer extends OCSF.Server.AbstractServer {
 					currentUser, currentUser.getID(), sys.getMessageList());
 			sendResult(order.toString() + '_' + currentUser.getID() + '_'
 					+ currentUser.getName(), result, client);
+			sys.writeUser();
 			break;
-
 		}
 
 	}
