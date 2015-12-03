@@ -124,12 +124,17 @@ public class User implements java.io.Serializable {
 		switch (type) {
 		case FreezerCooler:
 			switch (editData) {
-			case "Freezer":
+			// 스트링으로 하면 번거로울거같아서 숫자로 바꿔봐용 ^^
+			case "1":
 				modifyFood.setFreezeType(true);
 				break;
-			case "Cooler":
+			case "2":
 				modifyFood.setFreezeType(false);
 				break;
+			default:
+				System.err.println("Unknown type\n");
+				return false; // 여기 break 해놓으면 디폴트 값으로도 업데이트가 되는 부분이 있어서 return false로 수정하였습니다.
+					
 			}
 			break;
 		case Location:
@@ -149,7 +154,7 @@ public class User implements java.io.Serializable {
 			break;
 		default:
 			System.err.println("Unknown type\n"); /* p@ 음식 타입 에러 */
-			break;
+			return false;
 		}
 		return fList.updateList(UpdateUserAction.EDIT, type, modifyFood, this.getName(), mList);
 	}
