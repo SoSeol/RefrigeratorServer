@@ -143,7 +143,8 @@ public class UserList implements java.io.Serializable {
 			System.err.println("Unknown type\n"); /* p@ 메세지 타입 에러 */
 			break;
 		}
-		mList.add(newMessage);
+		if(newMessage != null)
+			mList.add(newMessage);
 	}
 
 	/*

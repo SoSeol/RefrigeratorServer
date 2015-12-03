@@ -51,11 +51,12 @@ public class Food implements java.io.Serializable {
 	}
 
 	public boolean isExpired() {
-		return expirationDate.before(Calendar.getInstance());
+		//return expirationDate.before(Calendar.getInstance());
+		return getLeftDays() < 0;
 	}
 
 	public String getName() {
-		return name;
+		return name;		
 	}
 
 	public int getQuantity() {
@@ -113,7 +114,7 @@ public class Food implements java.io.Serializable {
 	public void setMemo(String newMemo) {
 		memo = newMemo;
 	}
-	
+/*	
 	public int getLeftDays()
 	{
 		Calendar threeDays, twoDays, oneDay, today;
@@ -129,8 +130,33 @@ public class Food implements java.io.Serializable {
 		if(expirationDate.compareTo(twoDays) == 0) return 2;
 		if(expirationDate.compareTo(oneDay) == 0) return 1;
 		if(expirationDate.compareTo(today) > 0) return 4;
+		
 		return expirationDate.compareTo(today);
 	}
+*/
+	public int getLeftDays()
+ 	{
+ 		Calendar threeDays, twoDays, oneDay;
+ 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
+ 		
+ 		threeDays = Calendar.getInstance();
+ 		twoDays = Calendar.getInstance();
+ 		oneDay = Calendar.getInstance();
+ 		
+ 		threeDays.add(Calendar.DATE, 3);
+ 		twoDays.add(Calendar.DATE, 2);
+ 		oneDay.add(Calendar.DATE, 1);
+ 		
+ 		if(sdf.format(threeDays.getTime()).compareTo(sdf.format(expirationDate.getTime())) == 0) return 3;
+ 		if(sdf.format(twoDays.getTime()).compareTo(sdf.format(expirationDate.getTime())) == 0) return 2;
+ 		if(sdf.format(oneDay.getTime()).compareTo(sdf.format(expirationDate.getTime())) == 0) return 1;
+ 		if(sdf.format(Calendar.getInstance().getTime()).compareTo(sdf.format(expirationDate.getTime())) == 0) return 0;
+		if(sdf.format(Calendar.getInstance().getTime()).compareTo(sdf.format(expirationDate.getTime())) > 0) return -1;
+ 		return 4;
+ 	}
+	
+	
+	
 
 	/* p@ 몇시 몇분에 넣었는지 필요할까요?, 귀찮으니 그냥 안넣는걸로? 메모는 추가하였습니다. */
 	public String toString() {

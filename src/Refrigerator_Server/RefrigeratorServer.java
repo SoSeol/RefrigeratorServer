@@ -72,6 +72,7 @@ public class RefrigeratorServer extends OCSF.Server.AbstractServer {
 			case "DELETE":
 				handleClientOrder(ClientOrder.USER_DELETE, recieved, client);
 				writeFlag = true;
+				break;
 			case "REGISTER":
 				handleClientOrder(ClientOrder.USER_REGISTER, recieved, client);
 				writeFlag = true;
