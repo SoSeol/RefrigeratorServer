@@ -6,5 +6,5 @@ package Problem_Domain;
  * 추가(Addition) / 수정(Modification) / 제거(Removal)
  */
 public enum UpdateMessageType {
-	Addition, Modification, Removal;
+	Addition, Modification, Removal,Memo;
 }

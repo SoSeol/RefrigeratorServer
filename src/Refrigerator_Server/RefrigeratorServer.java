@@ -60,7 +60,7 @@ public class RefrigeratorServer extends OCSF.Server.AbstractServer {
 			}
 			if (writeFlag) {
 				sys.writeFood();
-				sys.writeMessage();
+				sys.writeMessage();	
 			}
 			break;
 		case "USER":
@@ -89,6 +89,7 @@ public class RefrigeratorServer extends OCSF.Server.AbstractServer {
 			if (writeFlag) {
 				sys.writeFood();
 				sys.writeMessage();
+				
 			}
 			break;
 		case "MSG":
@@ -107,6 +108,7 @@ public class RefrigeratorServer extends OCSF.Server.AbstractServer {
 			if (writeFlag) {
 				sys.writeFood();
 				sys.writeMessage();
+	
 			}
 			break;
 		default:
@@ -238,8 +240,11 @@ public class RefrigeratorServer extends OCSF.Server.AbstractServer {
 			}
 			break;
 		case MSG_MEMO:
-			index = Integer.parseInt(recieved[2]) - 1;
-			sys.getFoodList().elementAt(index).setMemo(recieved[3]);
+			//index = Integer.parseInt(recieved[2]) - 1;
+			//sys.getFoodList().elementAt(index).setMemo(recieved[3]);
+			Message newMemo;
+			newMemo = new Message("Memo " + recieved[2] + " stored by " + currentUser.getName(), currentUser.getID());
+			sys.getMessageList().add(newMemo);
 			sendResult(order.toString(), true, client);
 			break;
 		case LOGIN:

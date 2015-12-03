@@ -31,7 +31,7 @@ public class Message implements java.io.Serializable {
 		createdBy = created;
 	}
 
-	protected Message(String detail, String created) {
+	public Message(String detail, String created) {
 		this(detail, created, getAfterDay());
 	}
 

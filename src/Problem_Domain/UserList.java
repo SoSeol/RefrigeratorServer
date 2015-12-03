@@ -138,7 +138,7 @@ public class UserList implements java.io.Serializable {
 			break;
 		case Removal:
 			newMessage = new UpdateMessage("User " + tgtUserName + " deleted by " + operatorName, operatorName);
-			break;
+			break;			
 		default:
 			System.err.println("Unknown type\n"); /* p@ 메세지 타입 에러 */
 			break;
