@@ -216,8 +216,13 @@ public class RefrigeratorServer extends OCSF.Server.AbstractServer {
 			if ((boolean) client.getInfo(CLIENT_INFO_LOGGEDON) == false)
 				sendNotLoggedOnError(client);
 			try {
-				String msg = order + "_"
-						+ sys.getFoodList().searchList(recieved[2]);
+				String tempStr = sys.getFoodList().searchList(recieved[2]);
+				if(tempStr == null)
+				{
+					client.sendToClient(order + "_Food not found.");
+					return;
+				}
+				String msg = order + "_" + tempStr;
 				client.sendToClient(msg);
 			} catch (IOException ioe) {
 				ioe.printStackTrace();

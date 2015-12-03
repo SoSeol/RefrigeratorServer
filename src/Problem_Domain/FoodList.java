@@ -45,6 +45,7 @@ public class FoodList implements java.io.Serializable {
 			if (list.elementAt(i).getName().compareTo(name) == 0)
 				buf.append((i + 1) + " : " + list.elementAt(i).toString() + '\n');
 		}
+		if(buf.length() == 0) return null;
 		return buf.toString();
 	}
 
