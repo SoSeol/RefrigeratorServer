@@ -51,7 +51,7 @@ public class Food implements java.io.Serializable {
 	}
 
 	public boolean isExpired() {
-		return Calendar.getInstance().before(expirationDate);
+		return expirationDate.before(Calendar.getInstance());
 	}
 
 	public String getName() {
@@ -112,6 +112,24 @@ public class Food implements java.io.Serializable {
 
 	public void setMemo(String newMemo) {
 		memo = newMemo;
+	}
+	
+	public int getLeftDays()
+	{
+		Calendar threeDays, twoDays, oneDay, today;
+		threeDays = Calendar.getInstance();
+		twoDays = Calendar.getInstance();
+		oneDay = Calendar.getInstance();
+		today = Calendar.getInstance();
+		
+		threeDays.add(Calendar.DATE, -3);
+		twoDays.add(Calendar.DATE, -2);
+		oneDay.add(Calendar.DATE, -1);
+		if(expirationDate.compareTo(threeDays) == 0) return 3;
+		if(expirationDate.compareTo(twoDays) == 0) return 2;
+		if(expirationDate.compareTo(oneDay) == 0) return 1;
+		if(expirationDate.compareTo(today) > 0) return 4;
+		return expirationDate.compareTo(today);
 	}
 
 	/* p@ 몇시 몇분에 넣었는지 필요할까요?, 귀찮으니 그냥 안넣는걸로? 메모는 추가하였습니다. */

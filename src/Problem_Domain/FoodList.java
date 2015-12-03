@@ -61,7 +61,14 @@ public class FoodList implements java.io.Serializable {
 	 * 처리할지;; 처리하지 말까요?
 	 */
 	synchronized public Food elementAt(int index) {
-		return list.elementAt(index);
+		try
+		{
+			return list.elementAt(index);
+		}
+		catch(ArrayIndexOutOfBoundsException aioobe)
+		{
+			return null;
+		}
 	}
 
 	synchronized public Food searchFood(String foodName) {
@@ -80,17 +87,19 @@ public class FoodList implements java.io.Serializable {
 		for (Food tmp : list) {
 			if (tmp.isExpired())
 				createWarningMessage(WarningMessageType.FoodExpired, tmp, "Refrigerator", mList);
-			else if (Calendar.getInstance().compareTo(tmp.getExpirationDate()) <= 3)
+			else if (tmp.getLeftDays() <= 3)
 				createWarningMessage(WarningMessageType.FoodNearExpiration, tmp, "Refrigerator", mList);
 		}
 	}
-
+	
 	/*
 	 * p@ if문 살짝 다듬고 이 메서드 외에도 모든 스위치 문에 대해서 default 케이스에 시스템에러메세지 넣어두었습니다.(프로그램
 	 * 안정성을 위해서)
 	 */
 	synchronized public boolean updateList(UpdateUserAction act, FoodEditType editType, Food food, String operatorName,
 			MessageList mList) {
+		if(food == null) return false;
+		
 		int idx;
 		boolean bSuccess = false;
 		switch (act) {
@@ -213,7 +222,7 @@ public class FoodList implements java.io.Serializable {
 			break;
 		case FoodNearExpiration:
 			newMessage = new WarningMessage(
-					"Food near to expired in " + Calendar.getInstance().compareTo(tgtFood.getExpirationDate())
+					"Food near to expired in " + tgtFood.getLeftDays()
 							+ " days : Name -> " + tgtFood.getName() + ", Location : "
 							+ (tgtFood.getFreezeType() ? "Freezer" : "Cooler") + ", Floor " + tgtFood.getFloor(),
 					tgtUserName);

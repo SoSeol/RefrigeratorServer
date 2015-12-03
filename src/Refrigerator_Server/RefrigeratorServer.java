@@ -169,7 +169,7 @@ public class RefrigeratorServer extends OCSF.Server.AbstractServer {
 				sendUnknownCommandError(client);
 				return;
 			}
-			result = currentUser.modifyFood(fEditType, index, recieved[4],sys.getFoodList(), sys.getMessageList());
+			result = currentUser.modifyFood(fEditType, index, recieved[4], sys.getFoodList(), sys.getMessageList());
 			sendResult(order.toString(), result, client);
 			break;
 		case FOOD_REGISTER:
@@ -194,11 +194,19 @@ public class RefrigeratorServer extends OCSF.Server.AbstractServer {
 				} catch (IOException ioe) {
 				}
 			}
-			result = currentUser.registerFood(recieved[2],
+			
+			if(recieved.length > 9)
+				result = currentUser.registerFood(recieved[2],
 					Integer.parseInt(recieved[3]),
 					Integer.parseInt(recieved[4]),
 					Integer.parseInt(recieved[5]), bFreezer, recieved[7], cal,
 					recieved[9], sys.getFoodList(), sys.getMessageList());
+			else
+				result = currentUser.registerFood(recieved[2],
+					Integer.parseInt(recieved[3]),
+					Integer.parseInt(recieved[4]),
+					Integer.parseInt(recieved[5]), bFreezer, recieved[7], cal,
+					"No memo", sys.getFoodList(), sys.getMessageList());
 			sendResult(order.toString(), result, client);
 			break;
 		case FOOD_SEARCH:
@@ -270,7 +278,7 @@ public class RefrigeratorServer extends OCSF.Server.AbstractServer {
 				StringBuffer buf = new StringBuffer();
 				buf.append("LOGIN_TRUE_");
 				if (currentUser instanceof Administrator)
-					buf.append("ADMINISTRATOR_");
+					buf.append("ADMINISTRATOR");
 				else
 					buf.append("NORMALUSER");
 				buf.append("_");
@@ -330,8 +338,9 @@ public class RefrigeratorServer extends OCSF.Server.AbstractServer {
 				sendUnknownCommandError(client);
 				return;
 			}
+			index = Integer.parseInt(recieved[2]) - 1;
 			result = ((Administrator) currentUser).modifyUser(uEditType,
-					recieved[2], recieved[4], sys.getUserList(),
+					index, recieved[4], sys.getUserList(),
 					sys.getMessageList());
 			sendResult(order.toString(), result, client);
 			break;

@@ -6,7 +6,7 @@ import java.util.Calendar;
 public class Message implements java.io.Serializable {
 	private static final long serialVersionUID = 4412316044526006384L;
 	private final static byte DEFAULT_EXPIRE_DATE = 3;
-	private final static SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
+	private final static SimpleDateFormat SDF = new SimpleDateFormat("yyyy/MM/dd");
 	private String messageDetail;
 	private Calendar createdDate;
 	private Calendar expiredDate;
@@ -23,18 +23,16 @@ public class Message implements java.io.Serializable {
 	 *            게시 만료일자
 	 * @param created
 	 *            메세지 생성한 사용자
-	 *
+	 */
 	protected Message(String detail, String created, Calendar until) {
 		messageDetail = detail;
 		createdDate = Calendar.getInstance();
 		expiredDate = until;
 		createdBy = created;
-	}*/
+	}
 
 	protected Message(String detail, String created) {
-		messageDetail = detail;
-		createdDate = Calendar.getInstance();
-		createdBy = created;
+		this(detail, created, getAfterDay());
 	}
 
 	public boolean isExpired() {
@@ -57,9 +55,7 @@ public class Message implements java.io.Serializable {
 		return messageDetail;
 	}
 	
-	public static SimpleDateFormat getSdf() {
-		return sdf;
-	}
+	protected static SimpleDateFormat getSDF() { return SDF; }
 
 	/**
 	 * 현재 날짜에서 cnt일 후의 날짜를 계산해서 반환함
@@ -67,7 +63,7 @@ public class Message implements java.io.Serializable {
 	 * @param cnt
 	 *            몇일 후 지정
 	 * @return 계산한 날짜
-	 *
+	 */
 	private static Calendar getAfterDay(int cnt) {
 		Calendar date = Calendar.getInstance();
 		date.add(Calendar.DATE, cnt);
@@ -78,17 +74,9 @@ public class Message implements java.io.Serializable {
 	 * 기본 만료일 후의 날짜를 계산해서 반환함
 	 * 
 	 * @return 기본 만료일 후의 날짜
-	 *
+	 */
 	private static Calendar getAfterDay() {
 		return getAfterDay(DEFAULT_EXPIRE_DATE);
-	}
-	*/
-
-	
-	public Calendar getAfterDay() {
-		Calendar date = Calendar.getInstance();
-		date.add(Calendar.DATE, DEFAULT_EXPIRE_DATE);
-		return date;
 	}
 	
 	/**
@@ -105,7 +93,7 @@ public class Message implements java.io.Serializable {
 	public String toString() {
 		
 		//return '[' + sdf.format(getCreatedDate().getTime()) + ',' + getcreatedBy() + "] " + getMessageDetail();
-		return "[MEMO@"+getcreatedBy()+"] "+getMessageDetail() + " ("+getSdf().format(getCreatedDate().getTime()) + ')';
+		return "[MEMO@"+getcreatedBy()+"] "+getMessageDetail() + " ("+ SDF.format(getCreatedDate().getTime()) + ')';
 	}
 	
 }

@@ -1,5 +1,7 @@
 package Problem_Domain;
 
+import java.util.Calendar;
+
 public class WarningMessage extends Message {
 	private static final long serialVersionUID = 3407002089938496042L;
 
@@ -12,10 +14,12 @@ public class WarningMessage extends Message {
 	 *            메세지 제작자
 	 * @param messageUntil
 	 *            게시만료일자
-	 *
-	 *            public WarningMessage(String detail, String created, Calendar
-	 *            until) { super(detail, created, until); }
 	 */
+	public WarningMessage(String detail, String created, Calendar until)
+	{
+		 super(detail, created, until);
+	}
+
 
 	/**
 	 * 특정 종료일자를 지정하지 않을 경우 사용할 생성자
@@ -37,7 +41,7 @@ public class WarningMessage extends Message {
 		// String[] splitted = super.toString().split(" ");
 		// return splitted[0] + "Warning : " + splitted[1];
 		return "[WARNING@" + getcreatedBy() + "] " + getMessageDetail() + " ("
-				+ getSdf().format(getCreatedDate().getTime()) + ")";
+				+ getSDF().format(getCreatedDate().getTime()) + ")";
 	}
 
 }

@@ -104,6 +104,8 @@ public class RefrigeratorSystem {
 	synchronized private void writeFood(FoodList foodlist) {
 		FileOutputStream fos;
 		try {
+			foodlist.checkExpired(mlist);
+			foodlist.checkProhibited(mlist);
 			fos = new FileOutputStream("FoodList.ser");
 			BufferedOutputStream bos = new BufferedOutputStream(fos);
 			ObjectOutputStream out = new ObjectOutputStream(bos);

@@ -52,7 +52,14 @@ public class UserList implements java.io.Serializable {
 	 * @return idx°ª
 	 */
 	synchronized public User elementAt(int idx) {
-		return list.elementAt(idx);
+		try
+		{
+			return list.elementAt(idx);
+		}
+		catch(ArrayIndexOutOfBoundsException aioobe)
+		{
+			return null;
+		}
 	}
 
 	/**
@@ -70,10 +77,12 @@ public class UserList implements java.io.Serializable {
 	 */
 	synchronized public boolean updateList(UpdateUserAction act, User usr, String operatorName, MessageList mList)
 	{
-		return updateList(act, usr, operatorName, mList, false);
+		return updateList(act, usr, operatorName, mList, true);
 	}
 	synchronized public boolean updateList(UpdateUserAction act, User usr, String operatorName, MessageList mList, boolean bMessage)
 	{
+		if(usr == null) return false;
+		
 		int idx;
 		boolean bSuccess = false;
 		switch (act) {

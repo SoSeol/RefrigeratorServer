@@ -119,7 +119,7 @@ public class User implements java.io.Serializable {
 
 	public boolean modifyFood(FoodEditType type, int idx, String editData, FoodList fList, MessageList mList) {
 		Food modifyFood = fList.elementAt(idx);
-		if (editData == null)
+		if (editData == null || modifyFood == null)
 			return false;
 		switch (type) {
 		case FreezerCooler:

@@ -19,6 +19,11 @@ public class MessageList implements java.io.Serializable {
 	 *            추가할 메세지
 	 */
 	synchronized public void add(Message m) {
+		for(Message i : list)
+		{
+			if(i.toString().compareTo(m.toString()) == 0 && m instanceof WarningMessage)
+				return;
+		}
 		list.add(m);
 	}
 

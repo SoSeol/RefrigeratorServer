@@ -46,8 +46,8 @@ public class Administrator extends User {
 	 * @param editData
 	 *            수정할 데이터 내용
 	 */
-	public boolean modifyUser(UserEditType type, String id, String editData, UserList uList, MessageList mList) {
-		User targetUser = uList.checkID(id);
+	public boolean modifyUser(UserEditType type, int idx, String editData, UserList uList, MessageList mList) {
+		User targetUser = uList.elementAt(idx);
 		switch (type) {
 		/*
 		 * p@ ID 수정은 제외해야할 것 같습니다. 리스트에 지장이 있을 것 같아요 case ID:
