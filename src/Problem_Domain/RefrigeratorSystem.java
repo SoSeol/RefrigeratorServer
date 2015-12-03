@@ -10,10 +10,6 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
 public class RefrigeratorSystem {
-	/*
-	 * p@ static »®´Ï´Ù. private static UserList ulist; private static FoodList
-	 * flist; private static MessageList mlist;
-	 */
 
 	private UserList ulist;
 	private FoodList flist;
@@ -28,10 +24,6 @@ public class RefrigeratorSystem {
 		writeMessage(mlist);
 	}
 
-	/*
-	 * write : serialization read : deserialzation
-	 */
-	// p@ private static UserList readUser() {
 	private UserList readUser() {
 		UserList userlist = null;
 		FileInputStream fis;
@@ -52,12 +44,10 @@ public class RefrigeratorSystem {
 		return userlist;
 	}
 
-	// p@ synchronized public static void writeUser() {
 	synchronized public void writeUser() {
 		writeUser(ulist);
 	}
 
-	// p@ synchronized private static void writeUser(UserList userlist) {
 	synchronized private void writeUser(UserList userlist) {
 		FileOutputStream fos;
 		try {
@@ -72,7 +62,6 @@ public class RefrigeratorSystem {
 		}
 	}
 
-	// p@ private static FoodList readFood() {
 	private FoodList readFood() {
 
 		FoodList foodlist = null;
@@ -95,12 +84,10 @@ public class RefrigeratorSystem {
 		return foodlist;
 	}
 
-	// p@ synchronized public static void writeFood() {
 	synchronized public void writeFood() {
 		writeFood(flist);
 	}
 
-	// p@ synchronized private static void writeFood(FoodList foodlist) {
 	synchronized private void writeFood(FoodList foodlist) {
 		FileOutputStream fos;
 		try {
@@ -117,7 +104,6 @@ public class RefrigeratorSystem {
 		}
 	}
 
-	// p@ private static MessageList readMessage() {
 	private MessageList readMessage() {
 
 		MessageList messagelist = null;
@@ -131,7 +117,6 @@ public class RefrigeratorSystem {
 			in.close();
 		} catch (FileNotFoundException e) {
 			messagelist = new MessageList();
-			// e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
 		} catch (ClassNotFoundException e) {
@@ -140,13 +125,10 @@ public class RefrigeratorSystem {
 		return messagelist;
 	}
 
-	// p@ synchronized public static void writeMessage() {
 	synchronized public void writeMessage() {
 		writeMessage(mlist);
 	}
 
-	// p@ synchronized private static void writeMessage(MessageList messagelist)
-	// {
 	synchronized private void writeMessage(MessageList messagelist) {
 		FileOutputStream fos;
 		try {
@@ -161,17 +143,14 @@ public class RefrigeratorSystem {
 		}
 	}
 
-	// p@ public static UserList getUserList() {
 	public UserList getUserList() {
 		return ulist;
 	}
 
-	// p@ public static FoodList getFoodList() {
 	public FoodList getFoodList() {
 		return flist;
 	}
 
-	// p@ public static MessageList getMessageList() {
 	public MessageList getMessageList() {
 		return mlist;
 	}

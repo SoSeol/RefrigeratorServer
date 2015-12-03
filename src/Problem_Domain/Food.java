@@ -15,25 +15,24 @@ public class Food implements java.io.Serializable {
 	private Calendar insertedDate;
 	private String memo;
 
-	/* p@ 젠장!!! 메모가 없었어요ㅜㅜ */
-
 	/**
 	 * @param newName
-	 *            음식 이름
+	 * 
 	 * @param newQuantity
-	 *            음식 개수
+	 * 
 	 * @param newWeight
-	 *            음식 무게
+	 * 
 	 * @param newCalories
-	 *            개수당 칼로리
+	 * 
 	 * @param type
-	 *            냉동실이면 true, 냉장실이면 false
+	 *            freezer true, cooler false
 	 * @param location
-	 *            위치, 냉장고 몇 번째칸
+	 *            such as row, col, floor
 	 * @param newExpirationDate
-	 *            유통기한
+	 * 
 	 */
-	public Food(String newName, int newQuantity, int newWeight, int newCalories, boolean type, String location,
+	public Food(String newName, int newQuantity, int newWeight,
+			int newCalories, boolean type, String location,
 			Calendar newExpirationDate, String newMemo) {
 		name = newName;
 		quantity = newQuantity;
@@ -51,12 +50,11 @@ public class Food implements java.io.Serializable {
 	}
 
 	public boolean isExpired() {
-		//return expirationDate.before(Calendar.getInstance());
 		return getLeftDays() < 0;
 	}
 
 	public String getName() {
-		return name;		
+		return name;
 	}
 
 	public int getQuantity() {
@@ -114,56 +112,44 @@ public class Food implements java.io.Serializable {
 	public void setMemo(String newMemo) {
 		memo = newMemo;
 	}
-/*	
-	public int getLeftDays()
-	{
-		Calendar threeDays, twoDays, oneDay, today;
+
+	public int getLeftDays() {
+		Calendar threeDays, twoDays, oneDay;
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
+
 		threeDays = Calendar.getInstance();
 		twoDays = Calendar.getInstance();
 		oneDay = Calendar.getInstance();
-		today = Calendar.getInstance();
-		
-		threeDays.add(Calendar.DATE, -3);
-		twoDays.add(Calendar.DATE, -2);
-		oneDay.add(Calendar.DATE, -1);
-		if(expirationDate.compareTo(threeDays) == 0) return 3;
-		if(expirationDate.compareTo(twoDays) == 0) return 2;
-		if(expirationDate.compareTo(oneDay) == 0) return 1;
-		if(expirationDate.compareTo(today) > 0) return 4;
-		
-		return expirationDate.compareTo(today);
-	}
-*/
-	public int getLeftDays()
- 	{
- 		Calendar threeDays, twoDays, oneDay;
- 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
- 		
- 		threeDays = Calendar.getInstance();
- 		twoDays = Calendar.getInstance();
- 		oneDay = Calendar.getInstance();
- 		
- 		threeDays.add(Calendar.DATE, 3);
- 		twoDays.add(Calendar.DATE, 2);
- 		oneDay.add(Calendar.DATE, 1);
- 		
- 		if(sdf.format(threeDays.getTime()).compareTo(sdf.format(expirationDate.getTime())) == 0) return 3;
- 		if(sdf.format(twoDays.getTime()).compareTo(sdf.format(expirationDate.getTime())) == 0) return 2;
- 		if(sdf.format(oneDay.getTime()).compareTo(sdf.format(expirationDate.getTime())) == 0) return 1;
- 		if(sdf.format(Calendar.getInstance().getTime()).compareTo(sdf.format(expirationDate.getTime())) == 0) return 0;
-		if(sdf.format(Calendar.getInstance().getTime()).compareTo(sdf.format(expirationDate.getTime())) > 0) return -1;
- 		return 4;
- 	}
-	
-	
-	
 
-	/* p@ 몇시 몇분에 넣었는지 필요할까요?, 귀찮으니 그냥 안넣는걸로? 메모는 추가하였습니다. */
+		threeDays.add(Calendar.DATE, 3);
+		twoDays.add(Calendar.DATE, 2);
+		oneDay.add(Calendar.DATE, 1);
+
+		if (sdf.format(threeDays.getTime()).compareTo(
+				sdf.format(expirationDate.getTime())) == 0)
+			return 3;
+		if (sdf.format(twoDays.getTime()).compareTo(
+				sdf.format(expirationDate.getTime())) == 0)
+			return 2;
+		if (sdf.format(oneDay.getTime()).compareTo(
+				sdf.format(expirationDate.getTime())) == 0)
+			return 1;
+		if (sdf.format(Calendar.getInstance().getTime()).compareTo(
+				sdf.format(expirationDate.getTime())) == 0)
+			return 0;
+		if (sdf.format(Calendar.getInstance().getTime()).compareTo(
+				sdf.format(expirationDate.getTime())) > 0)
+			return -1;
+		return 4;
+	}
+
 	public String toString() {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
-		return name + " : Quantity -> " + quantity + ", weight -> " + weight + "g, calories -> " + calories
-				+ "kcal each, Location -> " + (freezeType ? "Freezer" : "Cooler") + ", floor " + floor
-				+ ", Inserted at " + sdf.format(insertedDate.getTime()) + ", Expiration Date -> "
+		return name + " : Quantity -> " + quantity + ", weight -> " + weight
+				+ "g, calories -> " + calories + "kcal each, Location -> "
+				+ (freezeType ? "Freezer" : "Cooler") + ", floor " + floor
+				+ ", Inserted at " + sdf.format(insertedDate.getTime())
+				+ ", Expiration Date -> "
 				+ sdf.format(expirationDate.getTime()) + ", memo : " + memo;
 	}
 }
